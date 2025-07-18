@@ -1,4 +1,34 @@
+import React, { useEffect } from 'react';
+
 const ResizableTable = ({className, columns, data, displayDataColumns, isLoading, error}) => {
+
+  useEffect(() => {
+    const resizers = document.querySelectorAll('.resizer');
+    let startX, startWidth, currentResizer;
+
+    resizers.forEach((resizer) => {
+      resizer.addEventListener('mousedown', (e) => {
+        startX = e.clientX;
+        startWidth = resizer.parentNode.offsetWidth;
+        currentResizer = resizer;
+      });
+    });
+
+    document.addEventListener('mousemove', (e) => {
+      if (currentResizer) {
+        const delta = e.clientX - startX;
+        let newWidth = startWidth + delta;
+
+        newWidth = Math.max(50, newWidth);
+        currentResizer.parentNode.style.width = `${newWidth}px`;
+      }
+    });
+
+    document.addEventListener('mouseup', () => {
+      currentResizer = null;
+      console.log('Resizing ended');
+    });
+  }, []);
 
   return (
     <table className={"resizable-table " + (className || "")}>
@@ -7,9 +37,10 @@ const ResizableTable = ({className, columns, data, displayDataColumns, isLoading
           {columns.map((column, index) => {
             return (
               <th key={index}>
-                <div className="resizable-content">
+                <div className="cell-content">
                   {column}
                 </div>
+                <div className="resizer"></div>
               </th>
             );
           })}
@@ -24,7 +55,9 @@ const ResizableTable = ({className, columns, data, displayDataColumns, isLoading
                 {displayDataColumns.map((col, colIndex) => {
                     return (
                     <td key={colIndex}>
+                       <div className="cell-content">
                         {col.split('.').reduce((obj, key) => obj && obj[key], item)}
+                       </div>
                     </td>
                     );
                 })}
