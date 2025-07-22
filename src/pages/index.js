@@ -14,7 +14,27 @@ export default function Home() {
       try {
         const response = await fetch('https://dummyjson.com/users');
         if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
+          switch (response.status) {
+            case 400:
+              throw new Error('Неверный запрос (400)');
+            case 401:
+              throw new Error('Неавторизован (401)');
+            case 403:
+              throw new Error('Доступ запрещён (403)');
+            case 404:
+              throw new Error('Ресурс не найден (404)');
+            case 422:
+              const validationErrors = await response.json().catch(() => null);
+              throw new Error(validationErrors?.message || 'Ошибка валидации (422)');
+            case 500:
+              throw new Error('Внутренняя ошибка сервера (500)');
+            case 502:
+              throw new Error('Промежуточный сервер недоступен (502 Bad Gateway)');
+            case 503:
+              throw new Error('Сервер недоступен (503)');
+            default:
+              throw new Error(`${response.status}`);
+          }
         }
         const jsonData = await response.json();
         setUsers(jsonData.users);
@@ -31,7 +51,7 @@ export default function Home() {
 
   return (
     <div>
-      <main className="flex flex-col overflow-x-scroll lg:items-center">
+      <main className="flex flex-col lg:items-center">
         <h1 style={{width: "50px", backgroundColor: "red"}}>user table</h1>
         <ResizableTable
           className="w-full max-w-[1440px] table-auto border-collapse border border-gray-300"
