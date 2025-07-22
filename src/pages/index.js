@@ -1,10 +1,13 @@
 import { useState, useEffect } from "react";
 import ResizableTable from "@/components/ResizableTable/ResizableTable";
+import Modal from "@/components/Modal/Modal";
 
 export default function Home() {
   const [users, setUsers] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isOpenModal, setIsOpenModal] = useState(false);
+  const [itemToModal, setItemToModal] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -37,8 +40,12 @@ export default function Home() {
           displayDataColumns={['lastName', 'firstName', 'maidenName', 'age', 'gender', 'phone', 'email', 'address.country', 'address.city']}
           isLoading={isLoading}
           error={error}
+          setIsOpenModal={setIsOpenModal}
+          setItemToModal={setItemToModal}
         />
       </main>
+      <Modal isOpen={isOpenModal} setIsOpen={setIsOpenModal} item={itemToModal}></Modal>
+      <div className="overlay"></div>
     </div>
   );
 }

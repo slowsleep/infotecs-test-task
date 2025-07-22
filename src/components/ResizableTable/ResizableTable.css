@@ -34,3 +34,12 @@
   overflow-x: auto;
   white-space: nowrap;
 }
+
+.table-row {
+  cursor: pointer;
+}
+
+.table-row:hover {
+  border-bottom: 1px solid #ccc;
+  background-color: #222;
+}

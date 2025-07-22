@@ -1,0 +1,40 @@
+.modal-overlay {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 20;
+    border: 1px solid rgba(100, 150, 50, 0.9);
+}
+
+.modal-content {
+    background-color: var(--background);
+    color: var(--foreground);
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 100%;
+}
+
+.modal-item-details h1 {
+    margin-bottom: 10px;
+    font-size: 24px;
+    color: var(--foreground);
+}
+
+.modal-close {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    cursor: pointer;
+    font-size: 20px;
+    color: var(--foreground);
+}
+
+.modal-address {
+    margin-left: 20px;
+}
